@@ -79,10 +79,16 @@ describe("Todo Application", function () {
     const todoID = parsedResponse.id;
     const deleteTodoResponse = await agent.delete(`/todos/${todoID}`).send();
     expect(deleteTodoResponse.statusCode).toBe(200);
+    const parsedDeleteResponse = JSON.parse(deleteTodoResponse.text);
+    expect(parsedDeleteResponse).toBe(true);
 
-    // const deleteNonExistentTodoResponse = await agent
-    // 	.delete(`/todos/100`)
-    // 	.send();
-    // expect(deleteNonExistentTodoResponse.statusCode).toBe(404);
+    const deleteNonExistentTodoResponse = await agent
+      .delete(`/todos/100`)
+      .send();
+    expect(deleteNonExistentTodoResponse.statusCode).toBe(404);
+    const parsedDeleteNonExistentTodoResponse = JSON.parse(
+      deleteNonExistentTodoResponse.text
+    );
+    expect(parsedDeleteNonExistentTodoResponse).toBe(false);
   });
 });
